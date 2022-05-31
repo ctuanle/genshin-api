@@ -1,0 +1,8 @@
+# dependencies
+node_modules
+
+# ts build output
+dist
+
+# misc
+.env
