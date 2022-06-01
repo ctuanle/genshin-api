@@ -1,7 +1,10 @@
 import { Router } from 'express';
-import { getCharacters, getCharacterByID } from '../controllers/characters';
+import { getCharacters, getCharacterByID, searchCharacters } from '../controllers/characters';
 
 const charsRouter = Router();
+
+// query: ?page, ?name, ...
+charsRouter.get('/search', searchCharacters);
 
 charsRouter.get('/:id', getCharacterByID);
 
