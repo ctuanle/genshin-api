@@ -6,3 +6,6 @@ dist
 
 # misc
 .env
+
+# dummy data
+src/data
