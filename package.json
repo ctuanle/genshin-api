@@ -28,6 +28,6 @@
     ],
     "ext": "js",
     "exec": "yarn start",
-    "delay": 10000
+    "delay": 2500
   }
 }
