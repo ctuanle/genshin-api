@@ -1,10 +1,18 @@
 import { Router } from 'express';
-import { getCharacters, getCharacterByID, searchCharacters } from '../controllers/characters';
+import {
+  getCharacters,
+  getCharacterByID,
+  searchCharacters,
+  getMostRecentlyReleasedCharacters,
+} from '../controllers/characters';
 
 const charsRouter = Router();
 
 // query: ?page, ?name, ...
 charsRouter.get('/search', searchCharacters);
+
+// recently released
+charsRouter.get('/recent', getMostRecentlyReleasedCharacters);
 
 charsRouter.get('/:id', getCharacterByID);
 

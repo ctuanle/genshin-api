@@ -108,3 +108,29 @@ export const searchCharacters = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getMostRecentlyReleasedCharacters = async (req: Request, res: Response) => {
+  try {
+    const projection: { [key: string]: any } = {
+      _id: 0,
+      id: 1,
+      name: 1,
+      rarity: 1,
+      weapon: 1,
+      vision: 1,
+      release_version: 1,
+      wiki_url: 1,
+    };
+    const chars = await CharacterModel.find({}, projection).sort({ release_day: -1 }).limit(3);
+
+    return res.status(200).json({
+      results: chars,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      error: {
+        message: `Error while getting resources for route /characters/${req.params.id}: ${error.message}`,
+      },
+    });
+  }
+};
