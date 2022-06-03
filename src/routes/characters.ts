@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getCharacterMedia } from '../controllers/characterMedia';
 import {
   getCharacters,
   getCharacterByID,
@@ -17,6 +18,9 @@ charsRouter.get('/recent', getMostRecentlyReleasedCharacters);
 
 // voices of char
 charsRouter.get('/:id/voices', getVoicesByChar);
+
+// media of char
+charsRouter.get('/:id/media', getCharacterMedia);
 
 charsRouter.get('/:id', getCharacterByID);
 

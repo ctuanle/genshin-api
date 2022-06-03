@@ -1,7 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 
 export interface ICharacterVoice {
-  _id?: string;
   title: string;
   requirement?: string;
   details: string[];

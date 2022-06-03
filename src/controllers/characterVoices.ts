@@ -41,7 +41,8 @@ export const getVoicesByChar = async (req: Request, res: Response) => {
     const charId = Number(req.params.id);
     if (!charId || charId < 1) throw new Error('Unknown character id');
 
-    const char = (await CharacterModel.find({ id: charId }))[0];
+    const char = await CharacterModel.findOne({ id: charId }, { id: 1 });
+    if (!char) throw new Error('Unknown character id');
 
     const voices = await CharacterVoiceModel.find(
       { spoken_by: char._id },

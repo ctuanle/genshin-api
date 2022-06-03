@@ -37,7 +37,7 @@ export const getCharacterByID = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     if (!id) throw new Error('Unknown id');
 
-    const char = (await CharacterModel.find({ id: id }, { _id: 0, __v: 0 }))[0];
+    const char = await CharacterModel.findOne({ id: id }, { _id: 0, __v: 0 });
     if (!char) throw new Error('Unknown id');
 
     return res.status(200).json({
