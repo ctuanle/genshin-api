@@ -1,4 +1,4 @@
-import e, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import { ICharacter } from '../models/Character.interface';
 

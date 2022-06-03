@@ -5,6 +5,7 @@ import {
   searchCharacters,
   getMostRecentlyReleasedCharacters,
 } from '../controllers/characters';
+import { getVoicesByChar } from '../controllers/voices';
 
 const charsRouter = Router();
 
@@ -13,6 +14,9 @@ charsRouter.get('/search', searchCharacters);
 
 // recently released
 charsRouter.get('/recent', getMostRecentlyReleasedCharacters);
+
+// voices of char
+charsRouter.get('/:id/voices', getVoicesByChar);
 
 charsRouter.get('/:id', getCharacterByID);
 
