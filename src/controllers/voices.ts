@@ -4,13 +4,19 @@ import VoiceModel from '../models/Voice';
 
 export const getVoices = async (req: Request, res: Response) => {
   try {
-    const total_results = await VoiceModel.count();
+    const title = req.query.title as string;
+    let filter: { [key: string]: any } = {};
+    if (title && title.length !== 0) filter.title = new RegExp(title, 'i');
+
+    const total_results = await VoiceModel.count(filter);
     const total_pages = Math.ceil(total_results / 20);
 
     let page = Number(req.query.page);
     if (!page || page < 1) page = 1;
 
-    const voices = await VoiceModel.find({}, { _id: 0, __v: 0 })
+    const projection = { _id: 0, __v: 0 };
+
+    const voices = await VoiceModel.find(filter, projection)
       .skip(20 * (page - 1))
       .limit(20)
       .populate('spoken_by', { _id: 0, id: 1, name: 1 });
