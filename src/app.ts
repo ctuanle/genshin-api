@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import { setHeaderMiddleWare } from './middlewares/set-header';
 import charsRouter from './routes/characters';
-import voiceRouter from './routes/voice';
+import voiceRouter from './routes/characterVoices';
 
 const app: Application = express();
 

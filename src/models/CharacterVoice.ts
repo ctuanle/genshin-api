@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 
-export interface IVoice {
+export interface ICharacterVoice {
   _id?: string;
   title: string;
   requirement?: string;
@@ -8,7 +8,7 @@ export interface IVoice {
   spoken_by: Types.ObjectId;
 }
 
-const VoiceSchema = new Schema<IVoice>({
+const CharacterVoiceSchema = new Schema<ICharacterVoice>({
   title: {
     type: String,
     required: true,
@@ -27,6 +27,6 @@ const VoiceSchema = new Schema<IVoice>({
   },
 });
 
-const VoiceModel = model<IVoice>('Voice', VoiceSchema);
+const CharacterVoiceModel = model<ICharacterVoice>('CharacterVoice', CharacterVoiceSchema);
 
-export default VoiceModel;
+export default CharacterVoiceModel;

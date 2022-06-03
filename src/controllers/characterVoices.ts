@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
-import VoiceModel from '../models/Voice';
+import CharacterVoiceModel from '../models/CharacterVoice';
 
 export const getVoices = async (req: Request, res: Response) => {
   try {
@@ -8,7 +8,7 @@ export const getVoices = async (req: Request, res: Response) => {
     let filter: { [key: string]: any } = {};
     if (title && title.length !== 0) filter.title = new RegExp(title, 'i');
 
-    const total_results = await VoiceModel.count(filter);
+    const total_results = await CharacterVoiceModel.count(filter);
     const total_pages = Math.ceil(total_results / 20);
 
     let page = Number(req.query.page);
@@ -16,7 +16,7 @@ export const getVoices = async (req: Request, res: Response) => {
 
     const projection = { _id: 0, __v: 0 };
 
-    const voices = await VoiceModel.find(filter, projection)
+    const voices = await CharacterVoiceModel.find(filter, projection)
       .skip(20 * (page - 1))
       .limit(20)
       .populate('spoken_by', { _id: 0, id: 1, name: 1 });
@@ -43,10 +43,10 @@ export const getVoicesByChar = async (req: Request, res: Response) => {
 
     const char = (await CharacterModel.find({ id: charId }))[0];
 
-    const voices = await VoiceModel.find({ spoken_by: char._id }, { _id: 0, __v: 0 }).populate(
-      'spoken_by',
-      { _id: 0, id: 1, name: 1 },
-    );
+    const voices = await CharacterVoiceModel.find(
+      { spoken_by: char._id },
+      { _id: 0, __v: 0 },
+    ).populate('spoken_by', { _id: 0, id: 1, name: 1 });
     if (voices.length === 0) throw new Error('Currently there is no voice of this character');
 
     return res.status(200).json({
