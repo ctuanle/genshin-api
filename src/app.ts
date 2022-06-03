@@ -1,14 +1,15 @@
 import express, { Application, Request, Response } from 'express';
+import { setHeaderMiddleWare } from './middlewares/set-header';
 import charsRouter from './routes/characters';
 import voiceRouter from './routes/voice';
 
 const app: Application = express();
 
-app.use('/characters', charsRouter);
+app.use('/characters', setHeaderMiddleWare, charsRouter);
 
-app.use('/voices', voiceRouter);
+app.use('/voices', setHeaderMiddleWare, voiceRouter);
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', setHeaderMiddleWare, (req: Request, res: Response) => {
   res.json({
     message: 'Welcome to our world, fellow traveler!',
   });
