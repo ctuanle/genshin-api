@@ -7,9 +7,11 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r dotenv/config .",
-    "build": "npx tsc",
-    "build:watch": "npx tsc --watch",
-    "dev": "npx nodemon"
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "build:docker": "yarn build && docker build . -t genshin-api",
+    "dev": "nodemon",
+    "deploy:heroku": "heroku container:login && heroku container:push web --app=gshimpact-api && heroku container:release web --app=gshimpact-api"
   },
   "dependencies": {
     "dotenv": "^16.0.1",

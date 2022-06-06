@@ -1,0 +1,14 @@
+.dockerignore
+.env
+.git
+.gitignore
+.settings**/.vs
+.vscode
+Dockerfile*
+node_modules
+github
+node_modules
+.prettierrc
+src
+dist/data
+tsconfig.json
