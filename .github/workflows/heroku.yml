@@ -22,7 +22,9 @@ jobs:
           echo "  password $HTOKEN" >> ~/.netrc
         
       - name: Build project
-        run: yarn build
+        run: |
+          yarn
+          yarn build
       
       - name: Push docker image to Heroku and release it
         run: yarn deploy:heroku
