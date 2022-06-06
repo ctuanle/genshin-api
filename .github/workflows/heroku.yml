@@ -1,0 +1,25 @@
+name: CD_Heroku
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create heroku ~/.netrc 
+        env:
+          HLOGIN: ${{ secrets.HEROKU_LOGIN }}
+          HTOKEN: ${{ secrets.HEROKU_TOKEN }}
+        run: |
+          touch ~/.netrc
+          echo "machine api.heroku.com" >> ~/.netrc
+          echo "  login $HLOGIN" >> ~/.netrc
+          echo "  password $HTOKEN" >> ~/.netrc
+      
+      - name: Push docker image to Heroku and release it
+        run: yarn deploy:heroku
