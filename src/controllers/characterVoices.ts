@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import CharacterVoiceModel from '../models/CharacterVoice';
+import sendError, { ErrorWrapper } from '../helpers/send-error';
 
+/**
+ * Get a list of voices data, filtered by title if exist
+ * @param req query: ?title: string, ?page: number
+ * @param res
+ * @returns json data containing voices data
+ */
 export const getVoices = async (req: Request, res: Response) => {
   try {
     const title = req.query.title as string;
@@ -28,36 +35,33 @@ export const getVoices = async (req: Request, res: Response) => {
       total_pages: total_pages,
     });
   } catch (error: any) {
-    return res.status(400).json({
-      error: {
-        message: `Error while getting resources: ${error.message}`,
-      },
-    });
+    return sendError(error, res);
   }
 };
 
+/**
+ * Get voices data of a character
+ * @param req params id: number
+ * @param res
+ * @returns json data containing voices data
+ */
 export const getVoicesByChar = async (req: Request, res: Response) => {
   try {
     const charId = Number(req.params.id);
-    if (!charId || charId < 1) throw new Error('Unknown character id');
+    if (!charId || charId < 1) throw new ErrorWrapper(404, 'Unknown character id.');
 
     const char = await CharacterModel.findOne({ id: charId }, { id: 1 });
-    if (!char) throw new Error('Unknown character id');
+    if (!char) throw new ErrorWrapper(404, 'Unknown character id.');
 
     const voices = await CharacterVoiceModel.find(
       { spoken_by: char._id },
       { _id: 0, __v: 0 },
     ).populate('spoken_by', { _id: 0, id: 1, name: 1 });
-    if (voices.length === 0) throw new Error('Currently there is no voice of this character');
 
     return res.status(200).json({
       results: voices,
     });
   } catch (error: any) {
-    return res.status(500).json({
-      error: {
-        message: `Error while getting resources: ${error.message}`,
-      },
-    });
+    return sendError(error, res);
   }
 };
