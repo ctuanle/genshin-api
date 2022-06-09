@@ -13,12 +13,6 @@ const basicProjection: { [key: string]: any } = {
   wiki_url: 1,
 };
 
-/**
- * Get a list of characters, sort by id (asc) by default
- * @param req ?page: number
- * @param res
- * @returns json data containing a list of characters
- */
 export const getCharacters = async (req: Request, res: Response) => {
   try {
     // default page = 1, 10 records each page
@@ -43,12 +37,6 @@ export const getCharacters = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Get a character by ID
- * @param req params (id: number)
- * @param res
- * @returns json data containing character information
- */
 export const getCharacterByID = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -64,15 +52,10 @@ export const getCharacterByID = async (req: Request, res: Response) => {
     return sendError(error, res);
   }
 };
-/**
- * Search character by fields
- * @param req query: ?name, ?rarity, ?weapon, ?vision, ?model_type, ?region
- * @param res
- * @returns json data containing a list of characters
- */
+
 export const searchCharacters = async (req: Request, res: Response) => {
   try {
-    const { name, rarity, weapon, vision, model_type, region } = req.query;
+    const { name, rarity, weapon, vision, model_type: modelType, region } = req.query;
 
     const filter: { [key: string]: any } = {};
     const projection = { ...basicProjection };
@@ -81,8 +64,8 @@ export const searchCharacters = async (req: Request, res: Response) => {
     if (rarity) filter.rarity = rarity;
     if (weapon) filter.weapon = weapon;
     if (vision) filter.vision = vision;
-    if (model_type) {
-      filter.model_type = model_type;
+    if (modelType) {
+      filter.model_type = modelType;
       projection.model_type = 1;
     }
     if (region) {
@@ -113,12 +96,6 @@ export const searchCharacters = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Get the three most recently released characters
- * @param req
- * @param res
- * @returns json data containing three characters
- */
 export const getMostRecentlyReleasedCharacters = async (req: Request, res: Response) => {
   try {
     const projection = { ...basicProjection };
