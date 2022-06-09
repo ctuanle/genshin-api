@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application } from 'express';
 import { getWelcomeData } from './controllers/root';
 import { setHeaderMiddleWare } from './middlewares/set-header';
 import charsRouter from './routes/characters';

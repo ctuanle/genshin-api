@@ -3,12 +3,6 @@ import CharacterModel from '../models/Character';
 import CharacterMediaModel from '../models/CharacterMedia';
 import sendError, { ErrorWrapper } from '../helpers/send-error';
 
-/**
- * Get media data of a character
- * @param req : params id: number
- * @param res
- * @returns json data containing media data
- */
 export const getCharacterMedia = async (req: Request, res: Response) => {
   try {
     const charId = Number(req.params.id);
@@ -19,7 +13,7 @@ export const getCharacterMedia = async (req: Request, res: Response) => {
 
     const media = await CharacterMediaModel.findOne(
       { character: char._id },
-      { _id: 0, __v: 0 },
+      { _id: 0, __v: 0 }
     ).populate('character', {
       _id: 0,
       id: 1,

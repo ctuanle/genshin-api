@@ -1,18 +1,24 @@
 import mongoose from 'mongoose';
 
 import app from './app';
+// import mediaSeeder from './data/media';
 
 const PORT: number = Number(process.env.PORT) || 5000;
 const DB_URI = process.env.DATABASE_URL ?? '';
 
 const main = async () => {
   try {
-    const server = app.listen(PORT, () => {
+    // const server = app.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`Listening on port ${PORT}`);
     });
 
-    const db = await mongoose.connect(DB_URI);
+    // const db = await mongoose.connect(DB_URI);
+    await mongoose.connect(DB_URI);
     console.log('Connected to MongoDB Server');
+
+    // await mediaSeeder();
+    // console.log('done');
   } catch (error: any) {
     console.log(error);
   }
