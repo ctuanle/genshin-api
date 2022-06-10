@@ -12,8 +12,6 @@
     "build:docker": "yarn build && docker build . -t genshin-api",
     "dev": "nodemon",
     "deploy:heroku": "heroku container:login && heroku container:push web --app=gshimpact-api && heroku container:release web --app=gshimpact-api",
-    "check:lint": "eslint . --ext ts",
-    "check:format": "prettier -c src",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -29,10 +27,11 @@
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^13.0.1",
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
-    "typescript": "^4.7.2",
-    "husky": "^7.0.0"
+    "typescript": "^4.7.2"
   },
   "nodemonConfig": {
     "watch": [
@@ -41,6 +40,12 @@
     "ext": "js",
     "exec": "yarn start",
     "delay": 2500
+  },
+  "lint-staged": {
+    "*": [
+      "yarn eslint",
+      "yarn prettier -c"
+    ]
   },
   "eslintConfig": {
     "env": {
@@ -66,7 +71,8 @@
     },
     "ignorePatterns": [
       "node_modules",
-      "dist"
+      "dist",
+      "*.lock"
     ]
   },
   "prettier": {
