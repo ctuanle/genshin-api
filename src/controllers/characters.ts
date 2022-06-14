@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
-import { ICharacter } from '../models/Character.interface';
+import ICharacter from '../models/Character.interface';
 import sendError, { ErrorWrapper } from '../helpers/send-error';
 
 const basicProjection: { [key: string]: any } = {

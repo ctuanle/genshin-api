@@ -207,4 +207,67 @@ Example reponse:
 
 ---
 
+### **Banners**
+
+**/banners** - `https://gshimpact-api.herokuapp.com/banners`
+
+Return a list of banners (event wishes).
+
+Query:
+
+- page: number 1, 2, 3,...
+
+Example reponse:
+
+```javascript
+{
+  page: 1,
+  results: [
+    {
+      "id":37,
+      "name":"Discerner of Enigmas",
+      "type":"Character",
+      "version":"v2.7",
+      "featured":[
+        {
+          "id":49,
+          "name":"Yelan"
+        },
+        {
+          "id":2,
+          "name":"Barbara"
+        },
+        {
+          "id":34,
+          "name":"Yanfei"
+        },
+        {
+          "id":10,
+          "name":"Noelle"
+        }
+      ],
+      "start":"2022-05-31T00:00:00.000Z",
+      "end":"2022-06-20T22:00:00.000Z"
+    },
+    ...
+  ],
+  total_results: 38,
+  total_pages: 4
+}
+```
+
+**/banners/:id** - `https://gshimpact-api.herokuapp.com/banners/1`
+
+Return a banner by its id.
+
+Query:
+
+- params: id: 1, 2, ...
+
+**/banners/current** - `https://gshimpact-api.herokuapp.com/banners/current`
+
+Return current banners.
+
+---
+
 Upcoming endpoints...

@@ -72,7 +72,8 @@
     "ignorePatterns": [
       "node_modules",
       "dist",
-      "*.lock"
+      "*.lock",
+      "README.md"
     ]
   },
   "prettier": {
