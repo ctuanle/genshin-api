@@ -1,5 +1,5 @@
 import CharacterModel from '../models/Character';
-import { ICharacter } from '../models/Character.interface';
+import ICharacter from '../models/Character.interface';
 
 export const charsSeeder = async (chars: ICharacter[]) => {
   try {

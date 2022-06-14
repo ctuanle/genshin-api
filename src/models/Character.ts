@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { ICharacter } from './Character.interface';
+import ICharacter from './Character.interface';
 
 // Character scheme
 const CharacterSchema = new Schema<ICharacter>({
