@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import app from './app';
 
+/*global process*/
 const PORT: number = Number(process.env.PORT) || 5000;
 const DB_URI = process.env.DATABASE_URL ?? '';
 

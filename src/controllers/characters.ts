@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import ICharacter from '../models/Character.interface';
@@ -73,7 +74,7 @@ export const searchCharacters = async (req: Request, res: Response) => {
       projection.region = 1;
     }
 
-    if (Object.keys(filter).length === 0) return getCharacters(req, res);
+    if (Object.keys(filter).length === 0) return await getCharacters(req, res);
 
     const totalResults = await CharacterModel.count({ ...filter });
     const totalPages = Math.ceil(totalResults / 10);

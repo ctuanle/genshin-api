@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import CharacterVoiceModel from '../models/CharacterVoice';
