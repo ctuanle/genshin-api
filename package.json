@@ -42,8 +42,8 @@
     "delay": 2500
   },
   "lint-staged": {
-    "*.ts": "yarn eslint",
-    "*.{ts,json}": "yarn prettier -w"
+    "*.{ts,js}": "yarn eslint",
+    "*.{ts,js,json,md,yml}": "yarn prettier -w"
   },
   "eslintConfig": {
     "env": {
