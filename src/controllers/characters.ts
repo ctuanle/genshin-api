@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
@@ -108,6 +109,88 @@ export const getMostRecentlyReleasedCharacters = async (req: Request, res: Respo
       results: chars,
     });
   } catch (error: any) {
+    return sendError(error, res);
+  }
+};
+
+export const postAddCharacter = async (req: Request, res: Response) => {
+  try {
+    const newId = (await CharacterModel.count()) + 1;
+
+    const {
+      name,
+      title,
+      real_name,
+      rarity,
+      weapon,
+      vision,
+      model_type,
+      birthday,
+      constellation,
+      region,
+      affiliation,
+      special_dish,
+      how_to_obtain,
+      release_day,
+      release_version,
+      category,
+      voice_actors,
+      wiki_url,
+    } = req.body;
+
+    const newChar = new CharacterModel<ICharacter>({
+      id: newId,
+      name,
+      title,
+      real_name,
+      rarity,
+      weapon,
+      vision,
+      model_type,
+      birthday,
+      constellation,
+      region,
+      affiliation,
+      special_dish,
+      how_to_obtain,
+      release_day,
+      release_version,
+      category,
+      voice_actors,
+      wiki_url,
+    });
+    // const bodyChar: { [key: string]: any } = {};
+    // bodyChar.id = newId;
+    // bodyChar.name = req.body.name;
+    // if (req.body.title) {
+    //   bodyChar.title = req.body.title;
+    // }
+    // if (req.body.real_name) {
+    //   bodyChar.real_name = req.body.real_name;
+    // }
+    // bodyChar.rarity = req.body.rarity;
+    // bodyChar.weapon = req.body.weapon;
+    // bodyChar.vision = req.body.vision;
+    // bodyChar.model_type = req.body.model_type;
+    // bodyChar.birthday = req.body.birthday;
+    // bodyChar.constellation = req.body.constellation;
+    // bodyChar.region = req.body.region;
+    // if (req.body.affiliation) bodyChar.affiliation = req.body.affiliation;
+    // if (req.body.special_dish) bodyChar.special_dish = req.body.special_dish;
+    // if (req.body.how_to_obtain) bodyChar.how_to_obtain = req.body.how_to_obtain;
+    // bodyChar.release_day = new Date(req.body.release_day);
+    // bodyChar.release_version = new Date(req.body.release_version);
+    // bodyChar.category = req.body.category;
+    // bodyChar.voice_actors = req.body.voice_actors;
+    // bodyChar.wiki_url = req.body.wiki_url;
+
+    await newChar.save();
+
+    return res.status(201).json({
+      id: newChar.id,
+      message: 'Character added successfully!',
+    });
+  } catch (error) {
     return sendError(error, res);
   }
 };

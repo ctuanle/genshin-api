@@ -1,12 +1,15 @@
-import { Router } from 'express';
+import { json, Router } from 'express';
 import { getCharacterMedia } from '../controllers/characterMedia';
 import {
   getCharacters,
   getCharacterByID,
   searchCharacters,
   getMostRecentlyReleasedCharacters,
+  postAddCharacter,
 } from '../controllers/characters';
 import { getVoicesByChar } from '../controllers/characterVoices';
+import keyChecker from '../middlewares/check-key';
+import typeChecker from '../middlewares/type-checker';
 
 const charsRouter = Router();
 
@@ -25,6 +28,6 @@ charsRouter.get('/:id/media', getCharacterMedia);
 charsRouter.get('/:id', getCharacterByID);
 
 // query: ?page= (default 1)
-charsRouter.get('/', getCharacters);
+charsRouter.route('/').get(getCharacters).post(keyChecker, json(), typeChecker, postAddCharacter);
 
 export default charsRouter;
