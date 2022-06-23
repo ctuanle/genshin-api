@@ -7,12 +7,14 @@ import bannerRouter from './routes/banners';
 
 const app: Application = express();
 
-app.use('/characters', setHeaderMiddleWare, charsRouter);
+app.use(setHeaderMiddleWare);
 
-app.use('/voices', setHeaderMiddleWare, voiceRouter);
+app.use('/characters', charsRouter);
 
-app.use('/banners', setHeaderMiddleWare, bannerRouter);
+app.use('/voices', voiceRouter);
 
-app.get('/', setHeaderMiddleWare, getWelcomeData);
+app.use('/banners', bannerRouter);
+
+app.get('/', getWelcomeData);
 
 export default app;

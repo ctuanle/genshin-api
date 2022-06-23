@@ -4,10 +4,11 @@ import { Response } from 'express';
  * code 404: not found
  * code 500: server error
  */
-type StatusCode = 404 | 500;
+type StatusCode = 400 | 404 | 500;
 
 export class ErrorWrapper {
   code: StatusCode;
+
   message: string;
 
   constructor(code: StatusCode, message: string) {

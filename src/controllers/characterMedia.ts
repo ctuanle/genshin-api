@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
-import CharacterMediaModel from '../models/CharacterMedia';
+import CharacterMediaModel, { ICharacterMedia } from '../models/CharacterMedia';
 import sendError, { ErrorWrapper } from '../helpers/send-error';
 
 export const getCharacterMedia = async (req: Request, res: Response) => {
@@ -25,6 +25,36 @@ export const getCharacterMedia = async (req: Request, res: Response) => {
       result: media,
     });
   } catch (error: any) {
+    return sendError(error, res);
+  }
+};
+
+export const postAddMedia = async (req: Request, res: Response) => {
+  try {
+    const charId = Number(req.params.id);
+    const char = await CharacterModel.findOne({ id: charId });
+
+    if (!char) throw new ErrorWrapper(400, 'Unknown character ID!');
+
+    const { videos, cameos, artwork, birthday, promotion, holiday } = req.body;
+
+    const media = new CharacterMediaModel<ICharacterMedia>({
+      videos,
+      cameos,
+      artwork,
+      birthday,
+      promotion,
+      holiday,
+      character: char._id,
+    });
+
+    await media.save();
+
+    return res.status(201).json({
+      media: `/characters/${charId}/media`,
+      message: 'Media added successfully!',
+    });
+  } catch (error) {
     return sendError(error, res);
   }
 };
