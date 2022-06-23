@@ -144,6 +144,82 @@ function characterChecker(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
+export function mediaChecker(req: Request, res: Response, next: NextFunction) {
+  if (!Number(req.params.id) || Number(req.params.id) < 1) {
+    return sendError(new ErrorWrapper(400, 'Unknown character ID! Ex: 1'), res);
+  }
+  if (req.body.videos) {
+    if (typeof req.body.videos !== 'object') {
+      return sendError(
+        new ErrorWrapper(400, 'Array of videos media is required! Ex: ["link to media"]'),
+        res
+      );
+    }
+  } else {
+    req.body.videos = [];
+  }
+  if (req.body.cameos) {
+    if (typeof req.body.cameos !== 'object') {
+      return sendError(
+        new ErrorWrapper(400, 'Array of cameos media is required! Ex: ["link to media"]'),
+        res
+      );
+    }
+  } else {
+    req.body.cameos = [];
+  }
+  if (req.body.artwork) {
+    if (typeof req.body.artwork !== 'object') {
+      return sendError(
+        new ErrorWrapper(400, 'Array of artworks media is required! Ex: ["link to media"]'),
+        res
+      );
+    }
+  } else {
+    req.body.artwork = [];
+  }
+  if (req.body.holiday) {
+    if (typeof req.body.holiday !== 'object') {
+      return sendError(
+        new ErrorWrapper(400, 'Array of holiday media is required! Ex: ["link to media"]'),
+        res
+      );
+    }
+  } else {
+    req.body.holiday = [];
+  }
+  if (req.body.promotion) {
+    if (typeof req.body.promotion !== 'object') {
+      return sendError(
+        new ErrorWrapper(400, 'Array of promotion media is required! Ex: ["link to media"]'),
+        res
+      );
+    }
+  } else {
+    req.body.promotion = [];
+  }
+  next();
+}
+
+export function voiceChecker(req: Request, res: Response, next: NextFunction) {
+  if (!req.body.title) {
+    return sendError(new ErrorWrapper(400, 'Voice title is required! Ex: "About Fischl"'), res);
+  }
+  if (!req.body.details || typeof req.body.details !== 'object' || req.body.details.length < 1) {
+    return sendError(
+      new ErrorWrapper(400, 'Array of voice details is required! Ex: ["AH snow"]'),
+      res
+    );
+  }
+  if (!req.body.charId) {
+    return sendError(new ErrorWrapper(400, 'Character ID is required! Ex: 1'), res);
+  }
+  if (!Number(req.body.charId) || Number(req.body.charId) < 1) {
+    return sendError(new ErrorWrapper(400, 'Unknown character id. Ex: 1'), res);
+  }
+  next();
+}
+
 export default function typeChecker(req: Request, res: Response, next: NextFunction) {
   switch (req.originalUrl.split('?')[0]) {
     case '/banners': {

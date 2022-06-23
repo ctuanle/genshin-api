@@ -1,5 +1,5 @@
 import { json, Router } from 'express';
-import { getCharacterMedia } from '../controllers/characterMedia';
+import { getCharacterMedia, postAddMedia } from '../controllers/characterMedia';
 import {
   getCharacters,
   getCharacterByID,
@@ -9,7 +9,7 @@ import {
 } from '../controllers/characters';
 import { getVoicesByChar } from '../controllers/characterVoices';
 import keyChecker from '../middlewares/check-key';
-import typeChecker from '../middlewares/type-checker';
+import typeChecker, { mediaChecker } from '../middlewares/type-checker';
 
 const charsRouter = Router();
 
@@ -23,7 +23,10 @@ charsRouter.get('/recent', getMostRecentlyReleasedCharacters);
 charsRouter.get('/:id/voices', getVoicesByChar);
 
 // media of char
-charsRouter.get('/:id/media', getCharacterMedia);
+charsRouter
+  .route('/:id/media')
+  .get(getCharacterMedia)
+  .post(keyChecker, json(), mediaChecker, postAddMedia);
 
 charsRouter.get('/:id', getCharacterByID);
 

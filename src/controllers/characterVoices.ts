@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
-import CharacterVoiceModel from '../models/CharacterVoice';
+import CharacterVoiceModel, { ICharacterVoice } from '../models/CharacterVoice';
 import sendError, { ErrorWrapper } from '../helpers/send-error';
 
 export const getVoices = async (req: Request, res: Response) => {
@@ -51,6 +51,33 @@ export const getVoicesByChar = async (req: Request, res: Response) => {
       results: voices,
     });
   } catch (error: any) {
+    return sendError(error, res);
+  }
+};
+
+export const postAddVoice = async (req: Request, res: Response) => {
+  try {
+    const { title, requirement, details, charId } = req.body;
+    const char = await CharacterModel.findOne({ id: charId });
+
+    if (!char) {
+      return sendError(new ErrorWrapper(400, 'Unknown charater ID'), res);
+    }
+
+    const voice = new CharacterVoiceModel<ICharacterVoice>({
+      title,
+      requirement,
+      details,
+      spoken_by: char._id,
+    });
+
+    await voice.save();
+
+    return res.status(201).json({
+      voice: `/characters/${char.id}/voices`,
+      message: 'Voice added successfully!',
+    });
+  } catch (error) {
     return sendError(error, res);
   }
 };
