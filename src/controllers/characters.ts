@@ -19,14 +19,17 @@ export const getCharacters = async (req: Request, res: Response) => {
   try {
     // default page = 1, 10 records each page
     const totalResults = await CharacterModel.count();
-    const totalPages = Math.ceil(totalResults / 10);
+
+    const limiter = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limiter);
+
     let page = Number(req.query.page) || 1;
     if (page < 1 || page > totalPages) page = 1;
 
     const chars: ICharacter[] = await CharacterModel.find({}, basicProjection)
       .sort({ id: 1 })
-      .skip(10 * (page - 1))
-      .limit(10);
+      .skip(limiter * (page - 1))
+      .limit(limiter);
 
     return res.status(200).json({
       page: page,

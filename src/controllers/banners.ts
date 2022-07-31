@@ -10,14 +10,16 @@ import sendError, { ErrorWrapper } from '../helpers/send-error';
 export const getBanners = async (req: Request, res: Response) => {
   try {
     const totalResults = await BannerModel.count();
-    const totalPages = Math.ceil(totalResults / 10);
+
+    const limiter = Number(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalResults / limiter);
     let page = Number(req.query.page) || 1;
     if (page < 1 || page > totalPages) page = 1;
 
     const banners: IBanner[] = await BannerModel.find({}, { _id: 0, __v: 0 })
       .sort({ id: 1 })
-      .skip(10 * (page - 1))
-      .limit(10)
+      .skip(limiter * (page - 1))
+      .limit(limiter)
       .populate('featured', { _id: 0, id: 1, name: 1 });
 
     return res.status(200).json({
