@@ -19,7 +19,8 @@ jobs:
 
       - name: Run server locally
         env:
-          PORT: 3000
+          PORT: 5000
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: yarn start
 
       - name: Run tests
