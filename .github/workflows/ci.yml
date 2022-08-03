@@ -21,7 +21,7 @@ jobs:
         env:
           PORT: 5000
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: yarn start
+        run: yarn start &
 
       - name: Run tests
         run: yarn test
