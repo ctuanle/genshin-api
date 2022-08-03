@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run server locally
+        env:
+          PORT: 3000
+        run: yarn start
+
+      - name: Run tests
+        run: yarn test
