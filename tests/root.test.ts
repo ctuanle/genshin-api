@@ -5,7 +5,7 @@ describe('Response from root endpoint:', () => {
   let data: unknown;
 
   beforeAll(async () => {
-    const res = await axios.get('http://localhost:4000');
+    const res = await axios.get('http://localhost:5000');
     data = await res.data;
   });
 
