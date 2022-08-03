@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Build project
+        run: yarn build
+
       - name: Run server locally
         env:
           PORT: 3000
