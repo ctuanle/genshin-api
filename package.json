@@ -11,7 +11,7 @@
     "build:watch": "tsc --watch",
     "build:docker": "yarn build && docker build . -t genshin-api",
     "dev": "nodemon",
-    "deploy:heroku": "heroku container:login && heroku container:push web --app=gshimpact-api && heroku container:release web --app=gshimpact-api",
+    "deploy:heroku": "heroku container:login && heroku container:push web --app=gsi-api && heroku container:release web --app=gsi-api",
     "prepare": "husky install"
   },
   "dependencies": {
