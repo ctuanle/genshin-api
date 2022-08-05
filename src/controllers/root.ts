@@ -21,10 +21,10 @@ export const getWelcomeData = async (req: Request, res: Response) => {
     return res.json({
       message: 'Welcome to our world, fellow traveler!',
       endpoints: {
-        root: 'https://gshimpact-api.herokuapp.com/',
-        characters: 'https://gshimpact-api.herokuapp.com/characters',
-        voices: 'https://gshimpact-api.herokuapp.com/voices',
-        banners: 'https://gshimpact-api.herokuapp.com/banners',
+        root: 'https://gsi-api.herokuapp.com/',
+        characters: 'https://gsi-api.herokuapp.com/characters',
+        voices: 'https://gsi-api.herokuapp.com/voices',
+        banners: 'https://gsi-api.herokuapp.com/banners',
       },
       statistics: {
         characters: nbChars,
