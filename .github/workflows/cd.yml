@@ -1,7 +1,7 @@
 name: CD
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
       H_LOGIN: ${{ secrets.HEROKU_LOGIN }}
       H_TOKEN: ${{ secrets.HEROKU_TOKEN }}
       H_APP_NAME: gsi-api
-      H_PROD_URL: $${{ secrets.HEROKU_PROD_URL }}
+      H_PROD_URL: ${{ secrets.HEROKU_PROD_URL }}
 
     steps:
       - uses: actions/checkout@v3
