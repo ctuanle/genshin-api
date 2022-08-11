@@ -13,7 +13,7 @@
     "dev": "nodemon",
     "deploy:heroku": "heroku container:login && heroku container:push web --app=gsi-api && heroku container:release web --app=gsi-api",
     "heroku:login": "heroku container:login",
-    "heroku:push": "heroku:push web",
+    "heroku:push": "heroku container:push web",
     "heroku:release": "heroku container:release web",
     "prepare": "husky install"
   },
