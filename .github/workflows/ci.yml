@@ -55,9 +55,10 @@ jobs:
       - name: Create a message to this pull request
         run: |
           WF_URL="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID?check_suite_focus=true"
+          body="{"body": "Preview status: ${{job.status}}.</br>- Details: \[$GITHUB_RUN_ID\]\($WF_URL\)</br>- \[App\]\($H_APP_URL\)"}"
 
           curl -f -X POST \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.number}}/comments" \
-          -d "{"body": "Preview status: ${{job.status}}.</br>- Details: [$GITHUB_RUN_ID]($WF_URL)</br>- [App]($H_APP_URL)"}"
+          -d $body
