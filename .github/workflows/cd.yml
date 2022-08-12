@@ -1,0 +1,40 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      H_LOGIN: ${{ secrets.HEROKU_LOGIN }}
+      H_TOKEN: ${{ secrets.HEROKU_TOKEN }}
+      H_APP_NAME: gsi-api
+      H_PROD_URL: ${{ secrets.HEROKU_PROD_URL }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create heroku ~/.netrc
+
+        run: |
+          touch ~/.netrc
+          echo "machine api.heroku.com" >> ~/.netrc
+          echo "  login $H_LOGIN" >> ~/.netrc
+          echo "  password $H_TOKEN" >> ~/.netrc
+
+      - name: Build project
+        run: |
+          yarn
+          yarn build
+
+      - name: Push docker image to Heroku and release it
+        run: |
+          yarn heroku:login
+          yarn heroku:push --app $H_APP_NAME
+          yarn heroku:release --app $H_APP_NAME
+
+      - name: Make a curl to preview app
+        run: curl -f $H_PROD_URL
