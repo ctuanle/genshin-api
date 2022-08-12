@@ -61,9 +61,4 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.number}}/comments" \
-          -d '{"body": "Preview status: ${{job.status}}.\
-          </br>\
-          - Details: [${{ github.run_id }}]\
-          (https://github.com/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}?check_suite_focus=true)\
-          </br>\
-          - [App](${{ secrets.HEROKU_PREVIEW_URL }})"}'
+          -d '{"body": "Preview status: ${{job.status}}.</br>- Details: [${{ github.run_id }}](https://github.com/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}?check_suite_focus=true)</br>- App: [preview](${{ secrets.HEROKU_PREVIEW_URL }})"}'
