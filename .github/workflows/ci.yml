@@ -3,6 +3,10 @@ name: CI
 on:
   pull_request:
     branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'package.json'
 
 jobs:
   # run tests
@@ -12,50 +16,3 @@ jobs:
     steps:
       - name: Echo something
         run: echo "Hello World. Here I will run some tests. :3"
-
-  # deploy preview
-  preview:
-    runs-on: ubuntu-latest
-
-    permissions:
-      issues: write
-      contents: read
-      pull-requests: write
-
-    env:
-      H_LOGIN: ${{ secrets.HEROKU_LOGIN }}
-      H_TOKEN: ${{ secrets.HEROKU_TOKEN }}
-      H_APP_URL: ${{ secrets.HEROKU_PREVIEW_URL }}
-      H_APP_NAME: genshin-api-preview
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Create heroku ~/.netrc
-        run: |
-          touch ~/.netrc
-          echo "machine api.heroku.com" >> ~/.netrc
-          echo "  login $H_LOGIN" >> ~/.netrc
-          echo "  password $H_TOKEN" >> ~/.netrc
-
-      - name: Build project
-        run: |
-          yarn
-          yarn build
-
-      - name: Push docker image to Heroku and release it
-        run: |
-          yarn heroku:login
-          yarn heroku:push --app $H_APP_NAME
-          yarn heroku:release --app $H_APP_NAME
-
-      - name: Make a curl to preview app
-        run: curl -f $H_APP_URL
-
-      - name: Create a message to this pull request
-        run: |
-          curl -f -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{github.repository}}/issues/${{github.event.number}}/comments" \
-          -d '{"body": "Preview status: ${{job.status}}.</br>- Details: [${{ github.run_id }}](https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}?check_suite_focus=true)</br>- App: [preview](${{ secrets.HEROKU_PREVIEW_URL }})"}'
