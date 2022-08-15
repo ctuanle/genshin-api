@@ -12,3 +12,4 @@ node_modules
 src
 dist/data
 tsconfig.json
+tests
