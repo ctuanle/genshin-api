@@ -9,12 +9,12 @@ describe('Response from root endpoint:', () => {
     data = await res.data;
   });
 
-  test('Should contain welcome message', async () => {
+  test('Should contain welcome message', () => {
     const { message } = data as { message: string };
     expect(message).toEqual('Welcome to our world, fellow traveler!');
   });
 
-  test('Should have endpoints objects', async () => {
+  test('Should have endpoints objects', () => {
     const { endpoints } = data as { endpoints: any };
     const { root, characters, voices, banners } = endpoints;
 
@@ -31,7 +31,7 @@ describe('Response from root endpoint:', () => {
     expect(banners.length).toBeGreaterThan(0);
   });
 
-  test('Should have statistics object', async () => {
+  test('Should have statistics object', () => {
     const { statistics } = data as { statistics: any };
     const { characters, media, voices, banners } = statistics;
 
