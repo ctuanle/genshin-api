@@ -7,4 +7,6 @@ COPY . .
 EXPOSE 3000
 RUN chown -R node /usr/src/app
 USER node
+# manually build project before running this dockerfile
+# this is for not install dev_dependencies
 CMD ["yarn", "start"]
