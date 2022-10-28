@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import CharacterMediaModel, { ICharacterMedia } from '../models/CharacterMedia';
-import sendError, { ErrorWrapper } from '../helpers/send-error';
+import { sendJsonOk, sendError, ErrorWrapper } from '../helpers/sender';
 
 export const getCharacterMedia = async (req: Request, res: Response) => {
   try {
@@ -21,9 +21,10 @@ export const getCharacterMedia = async (req: Request, res: Response) => {
       name: 1,
     });
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       result: media,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }

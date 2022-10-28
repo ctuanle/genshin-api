@@ -5,7 +5,7 @@ import CharacterModel from '../models/Character';
 import BannerModel from '../models/Banner';
 import { IBanner } from '../models/Banner';
 import { BannerType, Version } from '../models/Basic.type';
-import sendError, { ErrorWrapper } from '../helpers/send-error';
+import { sendJsonOk, sendError, ErrorWrapper } from '../helpers/sender';
 
 export const getBanners = async (req: Request, res: Response) => {
   try {
@@ -22,12 +22,13 @@ export const getBanners = async (req: Request, res: Response) => {
       .limit(limiter)
       .populate('featured', { _id: 0, id: 1, name: 1 });
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       page: page,
       results: banners,
       total_results: totalResults,
       total_pages: totalPages,
     });
+    //
   } catch (error) {
     return sendError(error, res);
   }
@@ -45,9 +46,10 @@ export const getBannerByID = async (req: Request, res: Response) => {
     });
     if (!banner) throw new ErrorWrapper(404, 'Unknown ID');
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       result: banner,
     });
+    //
   } catch (error) {
     return sendError(error, res);
   }
@@ -68,9 +70,10 @@ export const getCurrentBanner = async (req: Request, res: Response) => {
       name: 1,
     });
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       results: banners || 'No current banner',
     });
+    //
   } catch (error) {
     return sendError(error, res);
   }

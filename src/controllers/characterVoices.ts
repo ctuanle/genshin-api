@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import CharacterVoiceModel, { ICharacterVoice } from '../models/CharacterVoice';
-import sendError, { ErrorWrapper } from '../helpers/send-error';
+import { sendJsonOk, sendError, ErrorWrapper } from '../helpers/sender';
 
 export const getVoices = async (req: Request, res: Response) => {
   try {
@@ -23,12 +23,13 @@ export const getVoices = async (req: Request, res: Response) => {
       .limit(20)
       .populate('spoken_by', { _id: 0, id: 1, name: 1 });
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       page: page,
       results: voices,
       total_results: totalResults,
       total_pages: totalPages,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }
@@ -47,9 +48,10 @@ export const getVoicesByChar = async (req: Request, res: Response) => {
       { _id: 0, __v: 0 }
     ).populate('spoken_by', { _id: 0, id: 1, name: 1 });
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       results: voices,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }

@@ -3,7 +3,7 @@
 import { Request, Response } from 'express';
 import CharacterModel from '../models/Character';
 import ICharacter from '../models/Character.interface';
-import sendError, { ErrorWrapper } from '../helpers/send-error';
+import { sendJsonOk, sendError, ErrorWrapper } from '../helpers/sender';
 
 const basicProjection: { [key: string]: any } = {
   _id: 0,
@@ -31,12 +31,13 @@ export const getCharacters = async (req: Request, res: Response) => {
       .skip(limiter * (page - 1))
       .limit(limiter);
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       page: page,
       results: chars,
       total_results: totalResults,
       total_pages: totalPages,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }
@@ -50,9 +51,10 @@ export const getCharacterByID = async (req: Request, res: Response) => {
     const char = await CharacterModel.findOne({ id: id }, { _id: 0, __v: 0 });
     if (!char) throw new ErrorWrapper(404, 'Unknown ID');
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       result: char,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }
@@ -89,13 +91,14 @@ export const searchCharacters = async (req: Request, res: Response) => {
       .skip(10 * (page - 1))
       .limit(10);
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       page: page,
       results: chars,
       total_results: totalResults,
       total_pages: totalPages,
       supported_attributes: 'name, rarity, weapon, vision, model_type, region',
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }
@@ -108,9 +111,10 @@ export const getMostRecentlyReleasedCharacters = async (req: Request, res: Respo
 
     const chars = await CharacterModel.find({}, projection).sort({ release_day: -1 }).limit(3);
 
-    return res.status(200).json({
+    return sendJsonOk(res, req.originalUrl, {
       results: chars,
     });
+    //
   } catch (error: any) {
     return sendError(error, res);
   }
