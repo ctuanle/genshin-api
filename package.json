@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r dotenv/config .",
-    "build": "tsc --project config/tsconfig.build.json",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "build:docker": "yarn build && docker build . -t genshin-api",
     "dev": "nodemon",
