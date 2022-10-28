@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import sendError, { ErrorWrapper } from '../helpers/send-error';
+import { sendError, ErrorWrapper } from '../helpers/sender';
 import { BannerType, ModelType, RarityType, Region, Version } from '../models/Basic.type';
 
 function bannerChecker(req: Request, res: Response, next: NextFunction) {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import sendError from '../helpers/send-error';
+
+import { sendJsonOk, sendError } from '../helpers/sender';
 import BannerModel from '../models/Banner';
 import CharacterModel from '../models/Character';
 import CharacterMediaModel from '../models/CharacterMedia';
@@ -18,7 +19,7 @@ export const getWelcomeData = async (req: Request, res: Response) => {
     // const nbVoices = await CharacterVoiceModel.count();
     // const nbBanners = await BannerModel.count();
 
-    return res.json({
+    return sendJsonOk(res, req.originalUrl, {
       message: 'Welcome to our world, fellow traveler!',
       endpoints: {
         root: 'https://gsi-api.herokuapp.com/',
@@ -33,6 +34,7 @@ export const getWelcomeData = async (req: Request, res: Response) => {
         banners: nbBanners,
       },
     });
+    //
   } catch (error) {
     return sendError(error, res);
   }
