@@ -5,5 +5,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.format": true,
     "source.fixAll.eslint": true
-  }
+  },
+  "typescript.preferences.importModuleSpecifier": "relative"
 }

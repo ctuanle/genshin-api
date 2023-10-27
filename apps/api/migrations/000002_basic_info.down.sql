@@ -1,0 +1,11 @@
+BEGIN;
+
+DROP TABLE IF EXISTS char_wikilinks;
+DROP TABLE IF EXISTS weapon_types;
+DROP TABLE IF EXISTS visions;
+DROP TABLE IF EXISTS qualities;
+DROP TABLE IF EXISTS char_model_types;
+DROP TABLE IF EXISTS regions;
+DROP TABLE IF EXISTS languages;
+
+COMMIT;
