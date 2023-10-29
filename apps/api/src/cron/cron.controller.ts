@@ -19,4 +19,11 @@ export class CronController {
       'https://genshin-impact.fandom.com/wiki/Traveler',
     );
   }
+
+  @Get('get_char_voice_actors')
+  getCharVoiceActors() {
+    return this.cronService.getCharVoiceActors(
+      'https://genshin-impact.fandom.com/wiki/Amber',
+    );
+  }
 }

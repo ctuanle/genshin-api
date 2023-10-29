@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS char_voice_actors;

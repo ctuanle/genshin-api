@@ -29,8 +29,8 @@ export class CharSimple {
   /**
    * Yahooo
    */
-  @ApiProperty({ minimum: 1 })
-  id: number;
+  // @ApiProperty({ minimum: 1 })
+  // id: number;
 
   @ApiProperty({ example: 'Amber' })
   name: string;
@@ -56,7 +56,7 @@ class MetaData {
   order_by: string[];
 }
 
-export class GetAllCharsRes {
+export class GetListCharsRes {
   @ApiProperty({ type: () => [CharSimple] })
   characters: CharSimple[];
 

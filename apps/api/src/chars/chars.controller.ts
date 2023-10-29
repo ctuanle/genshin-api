@@ -2,15 +2,10 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CharsService } from './chars.service';
 import { ParseIntPositivePipe } from '../shared/pipes/parse-int-positive.pipe';
 import { ParseLangPipe } from '../shared/pipes/parse-language.pipe';
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Language } from '../shared/types';
-import { GetAllCharsReq, GetAllCharsRes } from './dtos/get-chars.dto';
+import { GetAllCharsReq, GetListCharsRes } from './dtos/get-chars.dto';
+import { GetCharInfoRes } from './dtos/get-char.dto';
 
 const prefix = 'c';
 
@@ -22,16 +17,12 @@ const prefix = 'c';
 export class CharsController {
   constructor(private readonly charsSrv: CharsService) {}
 
-  @ApiOkResponse({
-    description: 'list of characters',
-    type: GetAllCharsRes,
-    isArray: true,
-  })
+  /**
+   * Get a list of characters
+   */
   @Get()
-  async getAllChars(@Query() query: GetAllCharsReq) {
-    // Returning a list of characters information.
-    // By default, first 10 characters will be sent, sort by ID (ascending).
-    return this.charsSrv.getAllChar(query.page);
+  async getListChars(@Query() query: GetAllCharsReq): Promise<GetListCharsRes> {
+    return this.charsSrv.getListChars(query.page);
   }
 
   @ApiOperation({ summary: 'get one character by id' })
@@ -41,7 +32,7 @@ export class CharsController {
   getCharacter(
     @Param('id', new ParseIntPositivePipe()) id: number,
     @Query('lang', ParseLangPipe) lang: string,
-  ) {
+  ): Promise<{ character: GetCharInfoRes }> {
     return this.charsSrv.getCharInfoById(id, lang);
   }
 

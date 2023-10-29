@@ -193,4 +193,31 @@ export class CronService {
       console.log(error);
     }
   }
+
+  async getCharVoiceActors(url: string) {
+    const raw = await (await fetch(url)).text();
+    const $ = cheerio.load(raw);
+    const en = $('div[data-source="voiceEN"] div a').first();
+    const cn = $('div[data-source="voiceCN"] div a').first();
+    const jp = $('div[data-source="voiceJP"] div a').first();
+    const kr = $('div[data-source="voiceKR"] div a').first();
+
+    const charCode = url.split('/').at(-1);
+    const charQueryRes = await this.db.query<{ id: number }>(
+      null,
+      'SELECT id FROM characters WHERE code = $1',
+      [charCode],
+    );
+    if (charQueryRes.rows.length === 1) {
+      const charId = charQueryRes.rows[0].id;
+      const query = `INSERT INTO char_voice_actors (char_id, language, name, reference) VALUES ($1, $2, $3, $4)`;
+
+      await this.db.transaction(async (tx) => {
+        await tx.query(query, [charId, 'en', en.text(), en.attr('href')]);
+        await tx.query(query, [charId, 'cn', cn.text(), cn.attr('href')]);
+        await tx.query(query, [charId, 'jp', jp.text(), jp.attr('href')]);
+        await tx.query(query, [charId, 'kr', kr.text(), kr.attr('href')]);
+      });
+    }
+  }
 }

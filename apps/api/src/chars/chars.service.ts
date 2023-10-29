@@ -2,12 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { DBService } from '../db/db.service';
 import { CharSimple } from './dtos/get-chars.dto';
+import { GetCharInfoRes } from './dtos/get-char.dto';
 
 @Injectable()
 export class CharsService {
   constructor(private readonly db: DBService) {}
 
-  async getAllChar(page = 1, limit = 10) {
+  async getListChars(page = 1, limit = 10) {
     const query = `
       SELECT c.id, c.name, c.quality as rarity, wt.code as weapon, visions.code as vision
       FROM characters c
@@ -39,6 +40,7 @@ export class CharsService {
         json_build_object('code', cmt.code , 'translation', cmtt.translation) as model_type,
         array_agg(regions.code) as regions,
         (CASE WHEN cit.affiliations IS NULL THEN array[]::text[] ELSE cit.affiliations END) as affiliations,
+        json_agg(json_build_object('language', cva.language, 'name', cva.name, 'reference', cva.reference)) as voice_actors,
         cw.link as wikilink
       FROM characters c
       INNER JOIN weapon_types wt ON wt.id = c.weapon_id AND c.id = $2
@@ -50,10 +52,11 @@ export class CharsService {
       INNER JOIN characters_regions cr ON c.id = cr.char_id
       INNER JOIN regions ON regions.id = cr.region_id
       LEFT JOIN characterinfo_translations cit ON cit.char_id = c.id AND cit.lang = $1
+      LEFT JOIN char_voice_actors cva ON cva.char_id = c.id
       INNER JOIN char_wikilinks cw ON c.code = cw.code
       GROUP BY c.id, wt.code, wtt.translation, visions.code, vt.translation, cmt.code, cmtt.translation, cit.title, cit.constellation, cit.affiliations, cw.link
     `;
-    const result = await this.db.query(null, query, [lang, id]);
+    const result = await this.db.query<GetCharInfoRes>(null, query, [lang, id]);
 
     if (result.rows.length === 0) throw new NotFoundException();
     return { character: result.rows[0] };
